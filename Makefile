@@ -3,38 +3,29 @@ AREA=appl
 DEBUGINFO=true
 TARGET=TTC94
 
+# directories
 SRC_DIR = src
-LIB_DIR = lib
-IODRIVER_DIR = $(LIB_DIR)/tttech
+IODRIVER_DIR = lib/tttech
+IODRIVER_LDIR = $(IODRIVER_DIR)/lib
+BSP_DIR = $(IODRIVER_DIR)/bsp
 
-###############################################################################
-#
-# Includes
-#
-###############################################################################
+# includes
 include $(IODRIVER_DIR)/build/settings.mk
-
 INCDIRS += -I"."
 INCDIRS += -I $(SRC_DIR)
 INCDIRS += -I"C:\Eigen"
 
-
-# library directory
-IODRIVER_LDIR = $(IODRIVER_DIR)/lib
-
 # list of source and object files
-FILES = $(notdir $(basename $(wildcard ./src/*.c)))
+FILES = $(notdir $(basename $(wildcard $(SRC_DIR)/*.c)))
 OBJ_FILES := $(addprefix build/, $(addsuffix .obj, $(notdir $(FILES))))
 
-# bsp files
-BSP_DIR = $(IODRIVER_DIR)/bsp
-
+# list of bsp files
 ifeq ($(TARGET), TTC94)
-    # TTC94 
   	BSP_OBJ_FILES = $(BSP_DIR)/bin/bsp_cstart_ttc94.obj
 	DOWNLOADER_HW_TYPE = 0x00200801
 endif
 
+# list of lsl files
 LSL_FILE=application.lsl
 
 ###############################################################################
@@ -52,25 +43,23 @@ build/main.elf : $(IODRIVER_LDIR)/$(LIB_NAME) $(BSP_OBJ_FILES) $(OBJ_FILES)
 	@echo  done linking.
 	@echo  -------------
 
-	
-# build test files
-build/%.obj : ./src/%.c
+# build object files
+build/%.obj : $(SRC_DIR)/%.c
 	@echo compiling: $<
 	@"$(TSK_VIPER_CC)" -c -o $@ $(TSK_VIPER_COMP_FLAGS) $(INCDIRS) $<
-build/%.so : ./src/%.cpp
-	@echo compiling: $<
-	@"$(TSK_VIPER_++)" -c -o $@ $(TSK_VIPER_COMP_FLAGS) $(INCDIRS) $<
+
+# build shared libraries
+# build/%.so : $(SRC_DIR)/%.cpp
+# 	@echo compiling: $<
+# 	@"$(TSK_VIPER_++)" -c -o $@ $(TSK_VIPER_COMP_FLAGS) $(INCDIRS) $<
 
 clean:
 	@echo cleaning up test module files
 	-@del /F /Q build\*.*
 	@echo done.
-	
-#---------------------------------------------
-# postbuild rule
-#---------------------------------------------
+
 postbuild:
-	echo $(BSP_DIR)
+	@echo $(BSP_DIR)
 	@echo  ---------------------------------
 	@echo   Creating APDB...
 	@echo  ---------------------------------
