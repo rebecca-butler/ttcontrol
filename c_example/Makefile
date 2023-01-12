@@ -5,7 +5,7 @@ TARGET=TTC94
 
 # directories
 SRC_DIR = src
-IODRIVER_DIR = lib/tttech
+IODRIVER_DIR = ../lib/tttech
 IODRIVER_LDIR = $(IODRIVER_DIR)/lib
 BSP_DIR = $(IODRIVER_DIR)/bsp
 
@@ -13,7 +13,6 @@ BSP_DIR = $(IODRIVER_DIR)/bsp
 include $(IODRIVER_DIR)/build/settings.mk
 INCDIRS += -I"."
 INCDIRS += -I $(SRC_DIR)
-INCDIRS += -I"C:\Eigen"
 
 # list of source and object files
 FILES = $(notdir $(basename $(wildcard $(SRC_DIR)/*.c)))
@@ -47,11 +46,6 @@ build/main.elf : $(IODRIVER_LDIR)/$(LIB_NAME) $(BSP_OBJ_FILES) $(OBJ_FILES)
 build/%.obj : $(SRC_DIR)/%.c
 	@echo compiling: $<
 	@"$(TSK_VIPER_CC)" -c -o $@ $(TSK_VIPER_COMP_FLAGS) $(INCDIRS) $<
-
-# build shared libraries
-# build/%.so : $(SRC_DIR)/%.cpp
-# 	@echo compiling: $<
-# 	@"$(TSK_VIPER_++)" -c -o $@ $(TSK_VIPER_COMP_FLAGS) $(INCDIRS) $<
 
 clean:
 	@echo cleaning up test module files
