@@ -1,6 +1,6 @@
 #include "foo.h"
 
 int main() {
-  foo();
+  foo(2);
   return 0;
 }
