@@ -13,7 +13,9 @@ BSP_DIR = $(IODRIVER_DIR)/bsp
 include $(IODRIVER_DIR)/build/settings.mk
 INCDIRS += -I"."
 INCDIRS += -I"./$(SRC_DIR)"
-INCDIRS += -I"C:\Eigen"
+INCDIRS += -I"$(TSK_VIPER_PATH)/include.stl"
+INCDIRS += -I"$(TSK_VIPER_PATH)/include.cpp"
+INCDIRS += -I"$(TSK_VIPER_PATH)/include"
 
 # list of source files
 C_FILES = $(notdir $(basename $(wildcard $(SRC_DIR)/*.c)))
@@ -32,6 +34,10 @@ endif
 # list of lsl files
 LSL_FILE=application.lsl
 
+# custom compile flags
+TSK_VIPER_COMP_FLAGS_C = $(TSK_VIPER_COMP_FLAGS) --iso=99 --language=+cmp14,+div32,-gcc,-strings -O3 --mac
+TSK_VIPER_COMP_FLAGS_CPP = $(TSK_VIPER_COMP_FLAGS) --force-c++ --using-std --io-streams
+
 ###############################################################################
 #
 # Rules for building
@@ -49,13 +55,13 @@ build/main.elf : $(IODRIVER_LDIR)/$(LIB_NAME) $(BSP_OBJ_FILES) $(CPP_OBJ_FILES) 
 # build cpp object files
 build/cpp_files/%.obj : $(SRC_DIR)/%.cpp
 	@echo compiling: $<
-	@"$(TSK_VIPER_CC)" -c -o $@ $(TSK_VIPER_COMP_FLAGS) $(INCDIRS) $< 
+	@"$(TSK_VIPER_CC)" -c -o $@ $(TSK_VIPER_COMP_FLAGS_CPP) $(INCDIRS) $< 
 	@echo  -------------
 
 # build c object files
 build/c_files/%.obj : $(SRC_DIR)/%.c
 	@echo compiling: $<
-	@"$(TSK_VIPER_CC)" -c -o $@ $(TSK_VIPER_COMP_FLAGS) $(INCDIRS) $< 
+	@"$(TSK_VIPER_CC)" -c -o $@ $(TSK_VIPER_COMP_FLAGS_C) $(INCDIRS) $< 
 	@echo  -------------
 
 clean:

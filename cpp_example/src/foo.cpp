@@ -1,13 +1,21 @@
 #include "foo.h"
 
+#include <iostream>
 // #include <Eigen/Dense>
-// #include <iostream>
 
-extern "C" {
+/*****************************************
+ * 
+ * C++ library goes here
+ * 
+ *****************************************/
+class MyClass {
+  public:
+    int num;
+};
 
-int foo(int bar) {
-  return realFoo(bar);
-  // std::cout << "hello world!" << std::endl;
+int cppFoo() {
+  MyClass my_obj;
+  my_obj.num = 1;
 
   // Eigen::MatrixXd m(2,2);
   // m(0,0) = 1;
@@ -16,11 +24,19 @@ int foo(int bar) {
   // m(1,1) = 4;
   // std::cout << m << std::endl;
 
-  // std::cin.get();
+  return 1;
 }
 
+
+/*****************************************
+ * 
+ * C API for C++ library goes here
+ * 
+ *****************************************/
+extern "C" {
+
+int cFoo() {
+  return cppFoo();
 }
 
-int realFoo(int bar) {
-  return bar + 1;
 }

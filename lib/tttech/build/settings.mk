@@ -64,7 +64,7 @@ TSK_VIPER_PATH = c:\Program Files (x86)\TASKING\C166-VX v4.0r1
 
 # Tasking Viper compiler flags
 TSK_VIPER_COMP_FLAGS = -t -Wa-gAHLs --emit-locals=-equ,-symbols -Wa-OgsaJ --section-info=-console -Wa--error-limit=42
-TSK_VIPER_COMP_FLAGS += -Mh --iso=99 --language=+cmp14,+div32,-gcc,-strings -O3 --mac --tradeoff=0 --source
+TSK_VIPER_COMP_FLAGS += -Mh --tradeoff=0 --source
 TSK_VIPER_COMP_FLAGS += -Wc--no-tasking-sfr
 TSK_VIPER_COMP_FLAGS += -DTASKING_VIPER
 
